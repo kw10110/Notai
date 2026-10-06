@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data: https:; style-src 'self' 'unsafe-inline'; script-src 'self';" />
+  <title>NotAI</title>
+  <link rel="stylesheet" href="styles/app.css" />
+  <link rel="stylesheet" href="styles/mobile.css" />
+</head>
+<body>
+  <div id="app">
+    <div id="sidebarBackdrop"></div>
+    <aside id="sidebar">
+      <div class="sb-head">
+        <button id="btnHamburger" title="Menu">☰</button>
+        <div class="sb-title" id="vaultName">No vault</div>
+        <div class="sb-head-btns">
+          <button class="icon-btn" id="btnDarkMode" title="Toggle dark mode">🌙</button>
+          <button class="icon-btn" id="btnChooseVault" title="Open / switch vault">⚙</button>
+        </div>
+      </div>
+
+      <div class="sb-search"><input id="search" placeholder="Search notes…" /></div>
+
+      <div class="sb-section-db">
+        <div class="sb-section-label">
+          <span>Databases</span>
+          <button class="sb-add-btn" id="btnNewDb" title="New database">＋</button>
+        </div>
+        <ul id="dbList" class="sb-list"></ul>
+      </div>
+
+      <div class="sb-resize-handle" id="sbResizeHandle" title="Drag to resize"></div>
+
+      <div class="sb-section-notes">
+        <div class="sb-section-label">
+          <span>Notes</span>
+          <div class="sb-label-btns">
+            <button class="sb-add-btn" id="btnNewFolder" title="New folder">📁</button>
+            <button class="sb-add-btn" id="btnNew" title="New note">＋</button>
+          </div>
+        </div>
+        <ul id="noteList" class="sb-list"></ul>
+      </div>
+
+      <div class="sb-footer">
+        <button id="btnImportMd" class="sb-footer-btn">⇩ Import .md</button>
+        <button id="btnImportNotion" class="sb-footer-btn">⇩ Import Notion .zip</button>
+        <button id="btnNotionConnect" class="sb-footer-btn">🔗 Connect Notion</button>
+      </div>
+    </aside>
+
+    <main id="main">
+      <div id="navBar"><button id="navBack" title="Back (Alt+←)" disabled>←</button><button id="navFwd" title="Forward (Alt+→)" disabled>→</button></div>
+      <div id="editorWrap" class="view">
+        <!-- Find bar (Ctrl+F) -->
+        <div id="findBar" class="find-bar hidden">
+          <input id="findInput" class="find-input" placeholder="Find…" />
+          <span id="findCount" class="find-count"></span>
+          <button class="find-btn" id="findPrev" title="Previous (Shift+Enter)">↑</button>
+          <button class="find-btn" id="findNext" title="Next (Enter)">↓</button>
+          <button class="find-btn" id="findClose" title="Close (Escape)">✕</button>
+        </div>
+        <div id="editorToolbar">
+          <button class="zoom-btn" id="btnZoomOut" title="Zoom out">－</button>
+          <span class="zoom-label" id="zoomLabel">100%</span>
+          <button class="zoom-btn" id="btnZoomIn"  title="Zoom in">＋</button>
+          <button class="zoom-btn" id="btnZoomReset" title="Reset zoom">↺</button>
+          <button class="zoom-btn" id="btnToc" title="Toggle table of contents">≡</button>
+        </div>
+        <div id="editorBody">
+          <!-- TOC panel -->
+          <div id="tocPanel" class="toc-panel hidden">
+            <div class="toc-header">Contents</div>
+            <div id="tocList" class="toc-list"></div>
+          </div>
+          <div id="editorMain">
+            <div id="titleBar"><input id="docTitle" placeholder="Untitled" /></div>
+            <div id="editor" class="editor" contenteditable="false"></div>
+          </div>
+        </div>
+      </div>
+      <div id="dbWrap" class="view">
+        <div id="dbToolbar"></div>
+        <div id="dbTableWrap"></div>
+      </div>
+      <div id="empty" class="view active">
+        <div class="empty-inner">
+          <h1>NotAI</h1>
+          <p>Local-first, offline notes. Choose a vault folder to begin.</p>
+          <button id="btnChooseVault2" class="sb-btn">Choose vault folder</button>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Slash command menu -->
+  <div id="slashMenu" class="slash-menu hidden"></div>
+
+  <!-- Import progress overlay -->
+  <div id="importOverlay" class="import-overlay hidden">
+    <div class="import-box">
+      <div class="import-spinner"></div>
+      <div id="importMsg">Importing…</div>
+    </div>
+  </div>
+
+  <!-- Generic modal -->
+  <div id="modal" class="modal-overlay hidden">
+    <div class="modal-box" id="modalBox"></div>
+  </div>
+
+  <!-- Context menu -->
+  <div id="ctxMenu" class="ctx-menu hidden"></div>
+
+  <script src="lib/markdown.js"></script>
+  <script src="lib/csv.js"></script>
+  <script src="api_bridge.js"></script>
+  <script src="renderer.js"></script>
+</body>
+</html>

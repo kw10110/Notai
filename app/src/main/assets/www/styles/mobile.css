@@ -1,0 +1,74 @@
+/* ── NotAI Mobile overrides — loaded AFTER app.css so these win ── */
+/* The Android WebView uses fitsSystemWindows=true, so the system already insets
+   the whole WebView below the status bar and above the nav bar. We do NOT add
+   any manual safe-area padding here — doing so previously caused a large top margin. */
+
+html, body {
+  margin: 0;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+/* Override app.css's height:100vh (vh is unreliable in WebView). Use 100%. */
+#app {
+  height: 100% !important;
+  width: 100% !important;
+  overflow: hidden;
+}
+
+/* Touch targets */
+.sb-list li, .icon-btn, .sb-add-btn, .sb-footer-btn,
+.db-action-btn, .filter-btn, .find-btn, .zoom-btn, #btnHamburger {
+  min-height: 44px;
+}
+
+@media (max-width: 600px) {
+  /* Editor: kill the desktop 96px side padding that pushes content off-screen */
+  .editor {
+    padding: 16px 16px 96px !important;
+    font-size: 16px !important;
+    line-height: 1.75 !important;
+  }
+  #titleBar { padding: 12px 16px 0 !important; }
+  #docTitle { font-size: 22px !important; }
+
+  #editorToolbar {
+    flex-wrap: wrap !important;
+    padding: 6px 12px !important;
+    gap: 4px !important;
+  }
+
+  /* Sidebar slides in as an overlay */
+  #sidebar {
+    position: absolute !important;
+    z-index: 200;
+    width: 86vw; min-width: 240px; max-width: 320px;
+    height: 100%;
+    transform: translateX(-110%);
+    transition: transform .25s cubic-bezier(.4,0,.2,1);
+    display: flex;
+    flex-direction: column;
+  }
+  #sidebar.open { transform: translateX(0); box-shadow: 4px 0 24px rgba(0,0,0,.35); }
+
+  #sidebarBackdrop { display: none; position: absolute; inset: 0; z-index: 199; background: rgba(0,0,0,.4); }
+  #sidebarBackdrop.open { display: block; }
+
+  #mainArea, #editorWrap, #dbWrap { width: 100% !important; }
+
+  .sb-list { -webkit-overflow-scrolling: touch; }
+}
+
+/* Hamburger only on mobile */
+#btnHamburger {
+  display: none;
+  background: none; border: none; cursor: pointer;
+  font-size: 22px; padding: 8px 10px; color: var(--text);
+  min-width: 44px; align-items: center; justify-content: center;
+}
+@media (max-width: 600px) { #btnHamburger { display: inline-flex; } }
+
+@media (hover: none) { .sb-grip { opacity: 0.4; } }
+
+body { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
